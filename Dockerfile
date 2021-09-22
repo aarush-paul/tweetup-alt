@@ -1,21 +1,15 @@
-FROM node:14
+FROM node:14-alpine 
+# https://hub.docker.com/_/node
 
-WORKDIR /app
+WORKDIR /usr/src/app
 
-RUN apt-get update
-RUN apt-get install vim -y
-
-COPY package.json .
+COPY package*.json ./
+COPY .env.template ./.env
 
 RUN npm install
 
-COPY api api
-COPY public public
-COPY src src
-COPY ssl ssl
+COPY . .
 
-EXPOSE 3010/tcp
-EXPOSE 40000-40100/tcp
-EXPOSE 40000-40100/udp
+EXPOSE 3000
 
-CMD npm start
+CMD [ "npm", "start" ]
